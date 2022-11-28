@@ -1,5 +1,5 @@
 <resources>
-    <string name="place_order_button">Place Order</string>
+    <string name="place_order_button">Place Order (%1$s)</string>
 
     <string name="placement_none">None</string>
     <string name="placement_left">Left half</string>
@@ -14,4 +14,5 @@
     <string name="topping_pineapple">Pineapple</string>
 
     <string name="app_name">Pizza App</string>
+
 </resources>
