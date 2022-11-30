@@ -1,10 +1,13 @@
 package com.aaronbgrant.pizzaapp.model
 
+import android.os.Parcelable
 import com.aaronbgrant.pizzaapp.model.ToppingPlacement.*
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Pizza (
     val toppings: Map<Topping, ToppingPlacement> = emptyMap()
-) {
+) : Parcelable {
     val price : Double
         get() = 9.99 + toppings.asSequence()
             .sumOf { (_, toppingPlacement) ->

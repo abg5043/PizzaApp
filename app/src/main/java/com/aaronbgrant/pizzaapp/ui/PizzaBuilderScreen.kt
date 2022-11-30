@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.intl.Locale
@@ -18,14 +19,13 @@ import androidx.compose.ui.unit.dp
 import com.aaronbgrant.pizzaapp.R
 import com.aaronbgrant.pizzaapp.model.Pizza
 import com.aaronbgrant.pizzaapp.model.Topping
-import com.aaronbgrant.pizzaapp.model.ToppingPlacement
 
 @Preview
 @Composable
 fun PizzaBuilderScreen(
     modifier: Modifier = Modifier
 ) {
-    var pizza by remember { mutableStateOf(Pizza()) }
+    var pizza by rememberSaveable { mutableStateOf(Pizza()) }
 
     Column(
         modifier = modifier
@@ -52,6 +52,22 @@ private fun ToppingsList(
     pizza: Pizza,
     onEditPizza: (Pizza) -> Unit,
 ) {
+    var toppingBeingAdded by rememberSaveable {
+        mutableStateOf<Topping?>(null)
+    }
+
+    toppingBeingAdded?.let { topping ->
+        ToppingPlacementDialog(
+            topping = topping,
+            onSetToppingPlacement = { placement ->
+                onEditPizza(pizza.withTopping(topping, placement))
+            },
+            onDismissRequest = {
+                toppingBeingAdded = null
+            }
+        )
+    }
+
     LazyColumn(
         modifier = modifier
     ) {
@@ -60,17 +76,8 @@ private fun ToppingsList(
                 topping = topping,
                 placement = pizza.toppings[topping],
                 onClickTopping = {
-                    val isOnPizza = pizza.toppings[topping] != null
-                    onEditPizza(pizza.withTopping(
-                        topping = topping,
-                        placement = if (isOnPizza) {
-                            null
-                        } else {
-                            ToppingPlacement.All
-                        }
-                    ))
-
-            }
+                    toppingBeingAdded = topping
+                }
 
             )
         }
