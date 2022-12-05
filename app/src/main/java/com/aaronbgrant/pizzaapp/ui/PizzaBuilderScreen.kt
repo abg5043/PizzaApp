@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -26,24 +28,34 @@ fun PizzaBuilderScreen(
     modifier: Modifier = Modifier
 ) {
     var pizza by rememberSaveable { mutableStateOf(Pizza()) }
-
-    Column(
-        modifier = modifier
-    ) {
-        ToppingsList(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f, fill = true),
-            pizza,
-            onEditPizza = { pizza = it }
-        )
-        OrderButton(
-            pizza = pizza,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        )
-    }
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.app_name)) }
+            )
+        },
+        content = { padding ->
+            Column(
+                modifier = modifier
+                    .padding(padding)
+            ) {
+                ToppingsList(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f, fill = true),
+                    pizza,
+                    onEditPizza = { pizza = it }
+                )
+                OrderButton(
+                    pizza = pizza,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+            }
+        }
+    )
 }
 
 @Composable
@@ -71,6 +83,12 @@ private fun ToppingsList(
     LazyColumn(
         modifier = modifier
     ) {
+        item {
+            PizzaHeroImage(
+                pizza = pizza,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
         items(Topping.values()) { topping ->
             ToppingCell(
                 topping = topping,

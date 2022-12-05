@@ -16,4 +16,6 @@
 
     <string name="app_name">Pizza App</string>
 
+    <string name="pizza_preview">Pizza preview</string>
+
 </resources>
