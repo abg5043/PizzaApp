@@ -3,6 +3,9 @@ package com.aaronbgrant.pizzaapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.navigation.compose.rememberNavController
+import com.aaronbgrant.pizzaapp.navigation.Screen
+import com.aaronbgrant.pizzaapp.navigation.SetupNavGraph
 import com.aaronbgrant.pizzaapp.ui.AppTheme
 import com.aaronbgrant.pizzaapp.ui.PizzaBuilderScreen
 
@@ -11,7 +14,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AppTheme {
-                PizzaBuilderScreen()
+                val navController = rememberNavController()
+                SetupNavGraph(navController = navController, Screen.Splash.route)
             }
         }
     }
